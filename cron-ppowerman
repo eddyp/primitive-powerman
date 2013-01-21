@@ -1,0 +1,6 @@
+# Test threshold every 5 minutes - this must be corelated with
+# the threshold value and how reliable the power reading are.
+#
+# Recommended value: at least 3 possible detection occasions in
+# the threshold-0% interval should be given
+*/3 *	* * *	root	/usr/local/sbin/primitive-powerman
