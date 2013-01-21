@@ -1,0 +1,21 @@
+#!/bin/sh
+
+LIMIT_REGEX="00:0[0-9]:.."
+CRITICAL_ACTION=/usr/sbin/pm-hibernate
+
+ACPICMD=/usr/bin/acpi
+
+if [ ! -x $ACPICMD ]; then
+	echo "$ACPICMD not found. Quitting."
+	exit 1
+fi
+
+BAT_CRITICAL='no' # not necessary, but nice safety net
+BAT_CRITICAL="$(${ACPICMD} -b | grep 'Discharging' | grep -q "${LIMIT_REGEX} remaining" && echo 'yes' || echo 'no')"
+
+
+if [ "$BAT_CRITICAL" = 'yes' ]; then
+	echo "Critical batery level detected. Running critical action command: ${CRITICAL_ACTION}"
+	$CRITICAL_ACTION
+fi
+
